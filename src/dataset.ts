@@ -1,5 +1,5 @@
 import pool from "./db";
-import { User } from "./types";
+import {User} from "./types";
 
 export async function getUsers(): Promise<User[]> {
     const client = await pool.connect();
@@ -34,10 +34,15 @@ export async function createUser({ username, email, password }: { username: stri
     }
 }
 
-export async function updateUser(user: User): Promise<User> {
+export async function updateUser({id, username, email, password}: {
+    id: number,
+    username: string,
+    email: string,
+    password: string
+}): Promise<User> {
     const client = await pool.connect();
     try {
-        const res = await client.query<User>("UPDATE users SET username = $1, email = $2, password = $3 WHERE id = $4 RETURNING *", [user.username, user.email, user.password, user.id]);
+        const res = await client.query<User>("UPDATE users SET username = $1, email = $2, password = $3, updated_at = now() WHERE id = $4 RETURNING *", [username, email, password, id]);
         return res.rows[0];
     } finally {
         client.release();

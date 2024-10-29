@@ -1,4 +1,4 @@
-import {getUsers, getUser, createUser, deleteUser, updateUser} from "./dataset";
+import {createUser, deleteUser, getUser, getUsers, updateUser} from "./dataset";
 import {User} from "./types";
 
 const Resolver = {
@@ -8,7 +8,12 @@ const Resolver = {
     },
     Mutation: {
         createUser: (_: User, args: { username: string, email: string, password: string }) => createUser(args),
-        updateUser: (_: User, args: { user: User }) => updateUser(args.user),
+        updateUser: (_: User, args: {
+            id: number,
+            username: string,
+            email: string,
+            password: string
+        }) => updateUser(args),
         deleteUser: (_: User, args: { id: number }) => deleteUser(args.id)
     }
 };
