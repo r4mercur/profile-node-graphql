@@ -1,0 +1,39 @@
+type User {
+    id: ID!
+    username: String!
+    email: String!
+    password: String!
+    created_at: String!
+    updated_at: String!
+}
+
+type Role {
+    id: ID!
+    name: String!
+    created_at: String!
+    updated_at: String!
+}
+
+type UserRoles {
+    id: ID!
+    user_id: Int!
+    role_id: Int!
+    created_at: String!
+    updated_at: String!
+}
+
+type Query {
+    getAllUsers: [User]
+    getUser(id: Int): User
+}
+
+type Mutation {
+    createUser(username: String!, email: String!, password: String!): User
+    updateUser(id: Int!, username: String, email: String, password: String): User
+    deleteUser(id: Int!): User
+}
+
+schema {
+    query: Query
+    mutation: Mutation
+}
