@@ -1,5 +1,5 @@
 import pool from "./db";
-import {User} from "./types";
+import {User} from "../types";
 
 export async function getUsers(): Promise<User[]> {
     const client = await pool.connect();

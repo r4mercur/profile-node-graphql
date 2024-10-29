@@ -1,0 +1,16 @@
+### Create a new auth token
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+  "username": "my_user"
+}
+
+### Get the GraphQL endpoint (use the generated token)
+POST http://localhost:4000/graphql
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoibXlfdXNlciIsImlhdCI6MTczMDIyNjUzNX0.TAoat6NuvF1h6PAYKb-IVhhI46r_P3uG9aEKm_kmL80
+
+{
+  "query": "{ getAllUsers { id username email } }"
+}

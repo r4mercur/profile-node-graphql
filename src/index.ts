@@ -2,11 +2,26 @@ import {ApolloServer} from "apollo-server-express";
 import express from "express";
 import {ApolloServerPluginDrainHttpServer} from "apollo-server-core";
 import * as http from "node:http";
-import Schema from "./schema";
-import Resolver from "./resolver";
+import Schema from "./graphql/schema";
+import Resolver from "./graphql/resolver";
+import {authenticateToken} from "./auth/auth";
+import {generateToken} from "./auth/authtoken";
 
 async function startApplication(schema: any, resolvers: any) {
   const app = express();
+  app.use(express.json());
+
+  app.post("/login", (req, res) => {
+    const username = req.body.username;
+    const user = {name: username};
+
+    const token = generateToken(user);
+    res.json({token});
+  });
+
+  // authenticateToken is a middleware function that checks if the user is authenticated
+  app.use(authenticateToken);
+
   const httpServer = http.createServer(app);
   const server = new ApolloServer({
     typeDefs: schema,

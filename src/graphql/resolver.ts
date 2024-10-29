@@ -1,5 +1,5 @@
-import {createUser, deleteUser, getUser, getUsers, updateUser} from "./dataset";
-import {User} from "./types";
+import {createUser, deleteUser, getUser, getUsers, updateUser} from "../db/dataset";
+import {User} from "../types";
 
 const Resolver = {
     Query: {
