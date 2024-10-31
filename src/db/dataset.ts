@@ -168,7 +168,15 @@ export async function createProductFeaturedProfile(userId: number): Promise<Prod
             ]
         );
 
-        return res.rows[0];
+        const createdProfile = res.rows[0];
+        const user = await getUser(userId);
+
+        profile.id = createdProfile.id;
+        profile.user = user;
+        profile.updated_at = createdProfile.updated_at;
+        profile.created_at = createdProfile.created_at;
+
+        return profile;
     } finally {
         client.release();
     }

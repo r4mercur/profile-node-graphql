@@ -6,9 +6,10 @@ interface FeaturedProfileBuilder {
 }
 
 class FeaturedProfile {
-    private user!: User;
-    private createdAt!: Date;
-    private updatedAt!: Date;
+    public id!: number;
+    public user!: User;
+    public created_at!: Date;
+    public updated_at!: Date;
 }
 
 export enum FeaturedProfileType {

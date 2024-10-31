@@ -27,10 +27,21 @@ const Resolver = {
             password: string
         }) => updateUser(args),
         deleteUser: (_: User, args: { id: number }) => deleteUser(args.id),
-        createRegistrationFeaturedProfile: (_: User, args: {
-            id: number
-        }) => createRegistrationFeaturedProfile(args.id),
-        createProductFeaturedProfile: (_: User, args: { id: number }) => createProductFeaturedProfile(args.id),
+        createRegistrationFeaturedProfile: (_: any, args: {
+            user_id: number
+        }) => createRegistrationFeaturedProfile(args.user_id),
+        createProductFeaturedProfile: async (_: any, {user_id}: { user_id: number }) => {
+            const profile = await createProductFeaturedProfile(user_id);
+            return {
+                id: profile.id,
+                featured_profile: profile,
+                product_featured_profile_state: profile.productFeaturedProfileState,
+                product_featured_profile_timestamp: profile.productFeaturedProfileTimestamp,
+                user: profile.user,
+                created_at: profile.created_at,
+                updated_at: profile.updated_at,
+            };
+        },
     }
 };
 
