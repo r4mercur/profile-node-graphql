@@ -8,8 +8,27 @@ class FeaturedProfile {
     private age!: number;
 }
 
+enum RegistrationFeaturedProfileState {
+    PENDING = 'pending',
+    SKIPPED = 'skipped',
+    APPROVED = 'approved',
+    REJECTED = 'rejected',
+    DELETED = 'deleted',
+}
+
+enum ProductFeaturedProfileState {
+    OPEN = 'open',
+    INTERACTED = 'interacted',
+    CLOSED = 'closed',
+    REJECTED = 'rejected',
+    DELETED = 'deleted',
+}
+
+
 class RegistrationFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
     private featuredProfile: RegistrationFeaturedProfile;
+
+    private registrationFeaturedProfileState!: RegistrationFeaturedProfileState; 
 
     constructor() {
         super();
@@ -28,6 +47,8 @@ class RegistrationFeaturedProfile extends FeaturedProfile implements FeaturedPro
 
 class ProductFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
     private featuredProfile: ProductFeaturedProfile;
+
+    private productFeaturedProfileState!: ProductFeaturedProfileState;
 
     constructor() {
         super();
