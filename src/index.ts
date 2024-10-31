@@ -4,7 +4,6 @@ import {ApolloServerPluginDrainHttpServer} from "apollo-server-core";
 import * as http from "node:http";
 import Schema from "./graphql/schema";
 import Resolver from "./graphql/resolver";
-import {authenticateToken} from "./auth/auth";
 import {generateToken} from "./auth/authtoken";
 
 async function startApplication(schema: any, resolvers: any) {
@@ -20,7 +19,7 @@ async function startApplication(schema: any, resolvers: any) {
   });
 
   // authenticateToken is a middleware function that checks if the user is authenticated
-  app.use(authenticateToken);
+  // app.use(authenticateToken);
 
   const httpServer = http.createServer(app);
   const server = new ApolloServer({

@@ -91,7 +91,14 @@ export async function getRegistrationFeaturedProfile(id: number): Promise<Regist
 
         const row = res.rows[0];
         const profile = new RegistrationFeaturedProfile();
+        const user = await getUser(row.user_id);
+
+        profile.id = row.id;
         profile.registrationFeaturedProfileState = row.registration_featured_profile_state;
+        profile.user = user;
+        profile.created_at = row.created_at;
+        profile.updated_at = row.updated_at;
+
 
         return profile;
     } finally {
@@ -117,7 +124,15 @@ export async function createRegistrationFeaturedProfile(userId: number): Promise
             ]
         );
 
-        return res.rows[0];
+        const row = res.rows[0];
+        const user = await getUser(userId);
+
+        profile.id = row.id;
+        profile.registrationFeaturedProfileState = row.registration_featured_profile_state;
+        profile.user = user;
+        profile.created_at = row.created_at;
+        profile.updated_at = row.updated_at;
+        return profile;
     } finally {
         client.release();
     }
@@ -140,8 +155,12 @@ export async function getProductFeaturedProfile(id: number): Promise<ProductFeat
 
         const row = res.rows[0];
         const profile = new ProductFeaturedProfile();
+        const user = await getUser(row.user_id);
+
+        profile.id = row.id;
         profile.productFeaturedProfileState = row.product_featured_profile_state;
         profile.productFeaturedProfileTimestamp = row.product_featured_profile_timestamp;
+        profile.user = user;
 
         return profile;
     } finally {
