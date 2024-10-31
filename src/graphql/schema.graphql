@@ -7,21 +7,6 @@ type User {
     updated_at: String!
 }
 
-type Role {
-    id: ID!
-    name: String!
-    created_at: String!
-    updated_at: String!
-}
-
-type UserRoles {
-    id: ID!
-    user_id: Int!
-    role_id: Int!
-    created_at: String!
-    updated_at: String!
-}
-
 type Query {
     getAllUsers: [User]
     getUser(id: Int): User
