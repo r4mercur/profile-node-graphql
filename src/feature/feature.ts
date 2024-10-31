@@ -1,5 +1,7 @@
 interface FeaturedProfileBuilder {
     produceFeaturedProfile(): void;
+
+    reset(): void;
 }
 
 class FeaturedProfile {
@@ -25,18 +27,18 @@ enum ProductFeaturedProfileState {
 }
 
 
-class RegistrationFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
+export class RegistrationFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
     private featuredProfile: RegistrationFeaturedProfile;
 
     private registrationFeaturedProfileState!: RegistrationFeaturedProfileState; 
 
     constructor() {
         super();
-        this.featuredProfile = new RegistrationFeaturedProfile();
+        this.featuredProfile = this;
     }
 
     public reset(): void {
-        this.featuredProfile = new RegistrationFeaturedProfile();
+        this.featuredProfile = this;
     }
 
     /**
@@ -45,18 +47,19 @@ class RegistrationFeaturedProfile extends FeaturedProfile implements FeaturedPro
     produceFeaturedProfile(): void {}
 }
 
-class ProductFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
+export class ProductFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
     private featuredProfile: ProductFeaturedProfile;
 
     private productFeaturedProfileState!: ProductFeaturedProfileState;
+    private productFeaturedProfileTimestamp!: Date;
 
     constructor() {
         super();
-        this.featuredProfile = new ProductFeaturedProfile();
+        this.featuredProfile = this;
     }
 
     public reset(): void {
-        this.featuredProfile = new ProductFeaturedProfile();
+        this.featuredProfile = this;
     }
 
     /**
