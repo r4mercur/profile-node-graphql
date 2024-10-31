@@ -1,13 +1,19 @@
+import {User} from "../types";
+
 interface FeaturedProfileBuilder {
     produceFeaturedProfile(): void;
-
     reset(): void;
 }
 
 class FeaturedProfile {
-    private userId!: string;
-    private name!: string;
-    private age!: number;
+    private user!: User;
+    private createdAt!: Date;
+    private updatedAt!: Date;
+}
+
+export enum FeaturedProfileType {
+    REGISTRATION = 'RegistrationFeaturedProfile',
+    PRODUCT = 'ProductFeaturedProfile',
 }
 
 enum RegistrationFeaturedProfileState {
@@ -30,7 +36,7 @@ enum ProductFeaturedProfileState {
 export class RegistrationFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
     private featuredProfile: RegistrationFeaturedProfile;
 
-    private registrationFeaturedProfileState!: RegistrationFeaturedProfileState; 
+    public registrationFeaturedProfileState!: RegistrationFeaturedProfileState;
 
     constructor() {
         super();
@@ -44,14 +50,17 @@ export class RegistrationFeaturedProfile extends FeaturedProfile implements Feat
     /**
      * All production steps work with the same for featured profiles.
      */
-    produceFeaturedProfile(): void {}
+    produceFeaturedProfile(): void {
+        this.featuredProfile = this;
+        this.featuredProfile.registrationFeaturedProfileState = RegistrationFeaturedProfileState.PENDING;
+    }
 }
 
 export class ProductFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
     private featuredProfile: ProductFeaturedProfile;
 
-    private productFeaturedProfileState!: ProductFeaturedProfileState;
-    private productFeaturedProfileTimestamp!: Date;
+    public productFeaturedProfileState!: ProductFeaturedProfileState;
+    public productFeaturedProfileTimestamp!: Date;
 
     constructor() {
         super();
@@ -65,5 +74,9 @@ export class ProductFeaturedProfile extends FeaturedProfile implements FeaturedP
     /**
      * All production steps work with the same for featured profiles.
      */
-    produceFeaturedProfile(): void {}
+    produceFeaturedProfile(): void {
+        this.featuredProfile = this;
+        this.featuredProfile.productFeaturedProfileState = ProductFeaturedProfileState.OPEN;
+        this.featuredProfile.productFeaturedProfileTimestamp = new Date();
+    }
 }

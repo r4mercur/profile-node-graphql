@@ -7,15 +7,37 @@ type User {
     updated_at: String!
 }
 
+type FeaturedProfile {
+    id: ID!
+    user: User!
+    created_at: String!
+    updated_at: String!
+}
+
+type RegistrationFeaturedProfile {
+    featured_profile: FeaturedProfile!
+    registration_featured_profile_state: String!
+}
+
+type ProductFeaturedProfile {
+    featured_profile: FeaturedProfile!
+    product_featured_profile_state: String!
+    product_featured_profile_timestamp: String!
+}
+
 type Query {
     getAllUsers: [User]
     getUser(id: Int): User
+    getRegistrationFeaturedProfile(id: Int): RegistrationFeaturedProfile
+    getProductFeaturedProfile(id: Int): ProductFeaturedProfile
 }
 
 type Mutation {
     createUser(username: String!, email: String!, password: String!): User
     updateUser(id: Int!, username: String, email: String, password: String): User
     deleteUser(id: Int!): User
+    createRegistrationFeaturedProfile(user_id: Int!): RegistrationFeaturedProfile
+    createProductFeaturedProfile(user_id: Int!): ProductFeaturedProfile
 }
 
 schema {
