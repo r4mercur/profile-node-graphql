@@ -15,8 +15,29 @@ const Resolver = {
     Query: {
         getAllUsers: () => getUsers(),
         getUser: (_: User, args: { id: number }) => getUser(args.id),
-        getRegistrationFeaturedProfile: (_: User, args: { id: number }) => getRegistrationFeaturedProfile(args.id),
-        getProductFeaturedProfile: (_: User, args: { id: number }) => getProductFeaturedProfile(args.id),
+        getRegistrationFeaturedProfile: async (_: any, {user_id}: { user_id: number }) => {
+            const profile = await getRegistrationFeaturedProfile(user_id);
+            return {
+                id: profile.id,
+                featured_profile: profile,
+                registration_featured_profile_state: profile.registrationFeaturedProfileState,
+                user: profile.user,
+                created_at: profile.created_at,
+                updated_at: profile.updated_at,
+            };
+        },
+        getProductFeaturedProfile: async (_: any, {user_id}: { user_id: number }) => {
+            const profile = await getProductFeaturedProfile(user_id);
+            return {
+                id: profile.id,
+                featured_profile: profile,
+                product_featured_profile_state: profile.productFeaturedProfileState,
+                product_featured_profile_timestamp: profile.productFeaturedProfileTimestamp,
+                user: profile.user,
+                created_at: profile.created_at,
+                updated_at: profile.updated_at,
+            };
+        },
     },
     Mutation: {
         createUser: (_: User, args: { username: string, email: string, password: string }) => createUser(args),
