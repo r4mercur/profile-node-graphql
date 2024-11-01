@@ -1,4 +1,4 @@
-import {ProductFeaturedProfile, RegistrationFeaturedProfile} from "../feature";
+import {ProductFeaturedProfile, ProductFeaturedProfileState, RegistrationFeaturedProfile, RegistrationFeaturedProfileState} from "../feature";
 
 describe('FeaturedProfile Builder Pattern', () => {
     let registrationProfile: RegistrationFeaturedProfile;
@@ -12,6 +12,7 @@ describe('FeaturedProfile Builder Pattern', () => {
     test('should create a new RegistrationFeaturedProfile and reset it', () => {
         registrationProfile.produceFeaturedProfile();
         expect(registrationProfile).toBeInstanceOf(RegistrationFeaturedProfile);
+        expect(registrationProfile.registrationFeaturedProfileState).toBe(RegistrationFeaturedProfileState.PENDING)
 
         registrationProfile.reset();
         expect(registrationProfile).toBeInstanceOf(RegistrationFeaturedProfile);
@@ -20,6 +21,9 @@ describe('FeaturedProfile Builder Pattern', () => {
     test('should create a new ProductFeaturedProfile and reset it', () => {
         productProfile.produceFeaturedProfile();
         expect(productProfile).toBeInstanceOf(ProductFeaturedProfile);
+        expect(productProfile.productFeaturedProfileState).toBe(ProductFeaturedProfileState.OPEN);
+        expect(productProfile.productFeaturedProfileTimestamp).toBeInstanceOf(Date);
+        expect(productProfile.productFeaturedProfileTimestamp).toBeDefined();
 
         productProfile.reset();
         expect(productProfile).toBeInstanceOf(ProductFeaturedProfile);

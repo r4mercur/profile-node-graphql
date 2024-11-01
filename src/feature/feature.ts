@@ -17,7 +17,7 @@ export enum FeaturedProfileType {
     PRODUCT = 'ProductFeaturedProfile',
 }
 
-enum RegistrationFeaturedProfileState {
+export enum RegistrationFeaturedProfileState {
     PENDING = 'pending',
     SKIPPED = 'skipped',
     APPROVED = 'approved',
@@ -25,7 +25,7 @@ enum RegistrationFeaturedProfileState {
     DELETED = 'deleted',
 }
 
-enum ProductFeaturedProfileState {
+export enum ProductFeaturedProfileState {
     OPEN = 'open',
     INTERACTED = 'interacted',
     CLOSED = 'closed',
