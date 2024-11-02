@@ -15,8 +15,8 @@ const Resolver = {
     Query: {
         getAllUsers: () => getUsers(),
         getUser: (_: User, args: { id: number }) => getUser(args.id),
-        getRegistrationFeaturedProfile: async (_: any, {user_id}: { user_id: number }) => {
-            const profile = await getRegistrationFeaturedProfile(user_id);
+        getRegistrationFeaturedProfile: async (_: any, {id}: { id: number }) => {
+            const profile = await getRegistrationFeaturedProfile(id);
             return {
                 id: profile.id,
                 featured_profile: profile,
@@ -26,8 +26,8 @@ const Resolver = {
                 updated_at: profile.updated_at,
             };
         },
-        getProductFeaturedProfile: async (_: any, {user_id}: { user_id: number }) => {
-            const profile = await getProductFeaturedProfile(user_id);
+        getProductFeaturedProfile: async (_: any, {id}: { id: number }) => {
+            const profile = await getProductFeaturedProfile(id);
             return {
                 id: profile.id,
                 featured_profile: profile,
