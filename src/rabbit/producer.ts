@@ -5,7 +5,7 @@ export class RabbitExchange {
     private channel?: amqp.Channel;
 
     constructor(
-        private readonly uri: string = "amqp://localhost",
+        private readonly uri: string = "amqp://rabbit:password@localhost:5672",
         private readonly exchange: string,
         private readonly exchangeType: string = "direct",
     ) {}

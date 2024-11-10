@@ -18,19 +18,19 @@ export enum FeaturedProfileType {
 }
 
 export enum RegistrationFeaturedProfileState {
-    PENDING = 'pending',
-    SKIPPED = 'skipped',
-    APPROVED = 'approved',
-    REJECTED = 'rejected',
-    DELETED = 'deleted',
+    PENDING = 'PENDING',
+    SKIPPED = 'SKIPPED',
+    APPROVED = 'APPROVED',
+    REJECTED = 'REJECTED',
+    DELETED = 'DELETED',
 }
 
 export enum ProductFeaturedProfileState {
-    OPEN = 'open',
-    INTERACTED = 'interacted',
-    CLOSED = 'closed',
-    REJECTED = 'rejected',
-    DELETED = 'deleted',
+    OPEN = 'OPEN',
+    INTERACTED = 'INTERACTED',
+    CLOSED = 'CLOSED',
+    REJECTED = 'REJECTED',
+    DELETED = 'DELETED',
 }
 
 
