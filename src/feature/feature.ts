@@ -2,6 +2,7 @@ import {User} from "../types";
 
 interface FeaturedProfileBuilder {
     produceFeaturedProfile(): void;
+    produceEvent(): void;
     reset(): void;
 }
 
@@ -55,6 +56,10 @@ export class RegistrationFeaturedProfile extends FeaturedProfile implements Feat
         this.featuredProfile = this;
         this.featuredProfile.registrationFeaturedProfileState = RegistrationFeaturedProfileState.PENDING;
     }
+
+    public produceEvent(): void {
+        console.log('Registration featured profile created');
+    }
 }
 
 export class ProductFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
@@ -79,5 +84,9 @@ export class ProductFeaturedProfile extends FeaturedProfile implements FeaturedP
         this.featuredProfile = this;
         this.featuredProfile.productFeaturedProfileState = ProductFeaturedProfileState.OPEN;
         this.featuredProfile.productFeaturedProfileTimestamp = new Date();
+    }
+
+    public produceEvent(): void {
+        console.log('Product featured profile created');
     }
 }

@@ -5,6 +5,7 @@ import * as http from "node:http";
 import Schema from "./graphql/schema";
 import Resolver from "./graphql/resolver";
 import {generateToken} from "./auth/authtoken";
+import {setupRabbit} from "./rabbit/rabbit";
 
 async function startApplication(schema: any, resolvers: any) {
   const app = express();
@@ -38,3 +39,4 @@ async function startApplication(schema: any, resolvers: any) {
 
 
 startApplication(Schema, Resolver).then(() => console.log("Server started"));
+setupRabbit().catch(console.error);

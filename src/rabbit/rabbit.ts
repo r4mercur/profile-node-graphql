@@ -1,6 +1,6 @@
 import amqp from 'amqplib';
 
-async function setupRabbit() {
+export async function setupRabbit() {
     const connection = await amqp.connect({
         protocol: 'amqp',
         hostname: 'localhost',
@@ -22,5 +22,3 @@ async function setupRabbit() {
     await channel.close()
     await connection.close()
 }
-
-setupRabbit().catch(console.error);
