@@ -1,3 +1,4 @@
+import { RabbitExchange } from "../rabbit/exchange";
 import {User} from "../types";
 
 interface FeaturedProfileBuilder {
@@ -37,12 +38,14 @@ export enum ProductFeaturedProfileState {
 
 export class RegistrationFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
     private featuredProfile: RegistrationFeaturedProfile;
+    private eventHandler: RabbitExchange;
 
     public registrationFeaturedProfileState!: RegistrationFeaturedProfileState;
 
     constructor() {
         super();
         this.featuredProfile = this;
+        this.eventHandler = new RabbitExchange("amqp://rabbit:password@localhost:5672", "registrationEvents");
     }
 
     public reset(): void {
@@ -59,11 +62,13 @@ export class RegistrationFeaturedProfile extends FeaturedProfile implements Feat
 
     public produceEvent(): void {
         console.log('Registration featured profile created');
+        this.eventHandler.publish('registration', JSON.stringify(this.featuredProfile));
     }
 }
 
 export class ProductFeaturedProfile extends FeaturedProfile implements FeaturedProfileBuilder {
     private featuredProfile: ProductFeaturedProfile;
+    private eventHandler: RabbitExchange;
 
     public productFeaturedProfileState!: ProductFeaturedProfileState;
     public productFeaturedProfileTimestamp!: Date;
@@ -71,6 +76,7 @@ export class ProductFeaturedProfile extends FeaturedProfile implements FeaturedP
     constructor() {
         super();
         this.featuredProfile = this;
+        this.eventHandler = new RabbitExchange("amqp://rabbit:password@localhost:5672", "productEvents");
     }
 
     public reset(): void {
@@ -88,5 +94,6 @@ export class ProductFeaturedProfile extends FeaturedProfile implements FeaturedP
 
     public produceEvent(): void {
         console.log('Product featured profile created');
+        this.eventHandler.publish('product', JSON.stringify(this.featuredProfile));
     }
 }
