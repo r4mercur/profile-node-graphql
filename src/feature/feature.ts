@@ -62,7 +62,17 @@ export class RegistrationFeaturedProfile extends FeaturedProfile implements Feat
 
     public produceEvent(): void {
         console.log('Registration featured profile created');
-        this.eventHandler.publish('registration', JSON.stringify(this.featuredProfile));
+        this.eventHandler.publish('registration', JSON.stringify(this.serialize()));
+    }
+
+    private serialize(): object {
+        return {
+            id: this.id,
+            user: this.user,
+            created_at: this.created_at,
+            updated_at: this.updated_at,
+            registrationFeaturedProfileState: this.registrationFeaturedProfileState
+        };
     }
 }
 
@@ -94,6 +104,17 @@ export class ProductFeaturedProfile extends FeaturedProfile implements FeaturedP
 
     public produceEvent(): void {
         console.log('Product featured profile created');
-        this.eventHandler.publish('product', JSON.stringify(this.featuredProfile));
+        this.eventHandler.publish('product', JSON.stringify(this.serialize()));
+    }
+
+    private serialize(): object {
+        return {
+            id: this.id,
+            user: this.user,
+            created_at: this.created_at,
+            updated_at: this.updated_at,
+            productFeaturedProfileState: this.productFeaturedProfileState,
+            productFeaturedProfileTimestamp: this.productFeaturedProfileTimestamp
+        };
     }
 }
