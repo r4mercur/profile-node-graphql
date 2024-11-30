@@ -6,6 +6,7 @@ import Schema from "./graphql/schema";
 import Resolver from "./graphql/resolver";
 import {generateToken} from "./auth/authtoken";
 import {setupRabbit} from "./rabbit/rabbit";
+import {loginUser} from "./db/dataset";
 
 async function startApplication(schema: any, resolvers: any) {
   const app = express();
@@ -18,6 +19,21 @@ async function startApplication(schema: any, resolvers: any) {
     const token = generateToken(user);
     res.json({token});
   });
+
+  app.post("/user/login", (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+
+    const user = {email: email, password: password};
+    loginUser(user).then((user) => {
+      if (user) {
+        const token = generateToken(user);
+        res.json({token});
+      } else {
+        res.status(401).send("Invalid credentials");
+      }
+    });
+  })
 
   // authenticateToken is a middleware function that checks if the user is authenticated
   // app.use(authenticateToken);
