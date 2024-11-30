@@ -1,4 +1,5 @@
 import pool from "./db";
+import bcrypt from "bcrypt";
 import {User} from "../types";
 import {FeaturedProfileType, ProductFeaturedProfile, RegistrationFeaturedProfile} from "../feature/feature";
 
@@ -6,7 +7,7 @@ export async function getUsers(): Promise<User[]> {
     const client = await pool.connect();
 
     try {
-        const res = await client.query<User>(`SELECT *
+        const res = await client.query<User>(`SELECT id, username, email, created_at, updated_at
                                               FROM "user"`);
         return res.rows;
     } finally {
@@ -29,12 +30,30 @@ export async function getUser(id: number): Promise<User> {
 
 export async function createUser({ username, email, password }: { username: string, email: string, password: string }): Promise<User> {
     const client = await pool.connect();
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     try {
         const res = await client.query<User>(`INSERT INTO "user" (username, email, password, created_at, updated_at)
                                               VALUES ($1, $2, $3, now(), now())
-                                              RETURNING *`, [username, email, password]);
+                                              RETURNING *`, [username, email, hashedPassword]);
         return res.rows[0];
+    } finally {
+        client.release();
+    }
+}
+
+export async function loginUser({ email, password }: { email: string, password: string }): Promise<User | null> {
+    const client = await pool.connect();
+
+    try {
+        const res = await client.query<User>(`SELECT * FROM "user" WHERE email = $1`, [email]);
+        const user = res.rows[0];
+
+        if (user && await bcrypt.compare(password, user.password)) {
+            return user;
+        } else {
+            return null;
+        }
     } finally {
         client.release();
     }
