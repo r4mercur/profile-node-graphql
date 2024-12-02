@@ -3,7 +3,7 @@ import {
     createRegistrationFeaturedProfile,
     createUser,
     deleteUser,
-    getAllProductFeaturedProfiles,
+    getAllProductFeaturedProfiles, getAllRegistrationFeaturedProfiles,
     getProductFeaturedProfile,
     getRegistrationFeaturedProfile,
     getUser,
@@ -54,6 +54,17 @@ const Resolver = {
             });
         },
         getAllRegistrationFeaturedProfiles: async () => {
+            const profiles = await getAllRegistrationFeaturedProfiles();
+            return profiles.map(profile => {
+                return {
+                    id: profile.id,
+                    featured_profile: profile,
+                    registration_featured_profile_state: profile.registrationFeaturedProfileState,
+                    user: profile.user,
+                    created_at: profile.created_at,
+                    updated_at: profile.updated_at,
+                };
+            });
         },
     },
     Mutation: {
