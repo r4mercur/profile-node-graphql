@@ -3,6 +3,7 @@ import {
     createRegistrationFeaturedProfile,
     createUser,
     deleteUser,
+    getAllProductFeaturedProfiles,
     getProductFeaturedProfile,
     getRegistrationFeaturedProfile,
     getUser,
@@ -37,6 +38,22 @@ const Resolver = {
                 created_at: profile.created_at,
                 updated_at: profile.updated_at,
             };
+        },
+        getAllProductFeaturedProfiles: async () => {
+            const profiles = await getAllProductFeaturedProfiles();
+            return profiles.map(profile => {
+                return {
+                    id: profile.id,
+                    featured_profile: profile,
+                    product_featured_profile_state: profile.productFeaturedProfileState,
+                    product_featured_profile_timestamp: profile.productFeaturedProfileTimestamp,
+                    user: profile.user,
+                    created_at: profile.created_at,
+                    updated_at: profile.updated_at,
+                };
+            });
+        },
+        getAllRegistrationFeaturedProfiles: async () => {
         },
     },
     Mutation: {

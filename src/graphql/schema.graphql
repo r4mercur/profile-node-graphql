@@ -28,6 +28,8 @@ type Query {
     getUser(id: Int): User
     getRegistrationFeaturedProfile(id: Int): RegistrationFeaturedProfile
     getProductFeaturedProfile(id: Int): ProductFeaturedProfile
+    getAllProductFeaturedProfiles: [ProductFeaturedProfile]
+    getAllRegistrationFeaturedProfiles: [RegistrationFeaturedProfile]
 }
 
 type Mutation {

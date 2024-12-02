@@ -187,6 +187,36 @@ export async function getProductFeaturedProfile(id: number): Promise<ProductFeat
     }
 }
 
+export async function getAllProductFeaturedProfiles(): Promise<ProductFeaturedProfile[]> {
+    const client = await pool.connect();
+    try {
+        const res = await client.query(
+            `SELECT *
+             FROM featured_profile
+             WHERE featured_profile_type = $1`,
+            [FeaturedProfileType.PRODUCT]
+        );
+
+
+        const profiles: ProductFeaturedProfile[] = [];
+        for (const row of res.rows) {
+            const profile = new ProductFeaturedProfile();
+            profile.id = row.id;
+            profile.productFeaturedProfileState = row.product_featured_profile_state;
+            profile.productFeaturedProfileTimestamp = row.product_featured_profile_timestamp;
+            profile.user = await getUser(row.user_id);
+            profile.created_at = row.created_at;
+            profile.updated_at = row.updated_at;
+
+            profiles.push(profile);
+        }
+
+        return profiles;
+    } finally {
+        client.release();
+    }
+}
+
 export async function createProductFeaturedProfile(userId: number): Promise<ProductFeaturedProfile> {
     const client = await pool.connect();
     try {
