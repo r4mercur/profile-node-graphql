@@ -8,6 +8,7 @@ export interface User {
 }
 
 export interface FakeUser {
+    id?: number;
     username: string;
     email: string;
     password: string;
