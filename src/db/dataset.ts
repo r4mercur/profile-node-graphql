@@ -66,6 +66,8 @@ export async function updateUser({id, username, email, password}: {
     password: string
 }): Promise<User> {
     const client = await pool.connect();
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     try {
         const res = await client.query<User>(`UPDATE "user"
                                               SET username   = $1,
@@ -73,7 +75,7 @@ export async function updateUser({id, username, email, password}: {
                                                   password   = $3,
                                                   updated_at = now()
                                               WHERE id = $4
-                                              RETURNING *`, [username, email, password, id]);
+                                              RETURNING *`, [username, email, hashedPassword, id]);
         return res.rows[0];
     } finally {
         client.release();

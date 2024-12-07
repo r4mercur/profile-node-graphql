@@ -3,14 +3,17 @@ import {
     createRegistrationFeaturedProfile,
     createUser,
     deleteUser,
-    getAllProductFeaturedProfiles, getAllRegistrationFeaturedProfiles,
+    getAllProductFeaturedProfiles,
+    getAllRegistrationFeaturedProfiles,
     getProductFeaturedProfile,
     getRegistrationFeaturedProfile,
     getUser,
     getUsers,
+    loginUser,
     updateUser
 } from "../db/dataset";
 import {User} from "../types";
+import jwt from "jsonwebtoken";
 
 const Resolver = {
     Query: {
@@ -99,6 +102,19 @@ const Resolver = {
                 updated_at: profile.updated_at,
             };
         },
+        login: async (_: User, args: { email: string, password: string }) => {
+            const user = await loginUser({email: args.email, password: args.password});
+            if (!user) {
+                throw new Error('Invalid email or password');
+            }
+
+            const token = jwt.sign({user_id: user.id}, 'secret', {expiresIn: '1h'});
+
+            return {
+                user,
+                token
+            }
+        }
     }
 };
 

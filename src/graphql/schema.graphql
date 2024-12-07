@@ -7,6 +7,11 @@ type User {
     updated_at: String!
 }
 
+type AuthPayload {
+    token: String!
+    user: User!
+}
+
 type FeaturedProfile {
     id: ID!
     user: User!
@@ -38,6 +43,7 @@ type Mutation {
     deleteUser(id: Int!): User
     createRegistrationFeaturedProfile(user_id: Int!): RegistrationFeaturedProfile
     createProductFeaturedProfile(user_id: Int!): ProductFeaturedProfile
+    login(email: String!, password: String!): AuthPayload
 }
 
 schema {
