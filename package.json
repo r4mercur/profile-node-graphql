@@ -7,10 +7,7 @@
     "build": "tsc",
     "test": "jest",
     "start": "ts-node src/index.ts",
-	  "fake-data": "ts-node src/db/faker.ts",
-	  "graphql:codegen": "graphql codegen",
-	  "graphql:diff": "graphql diff",
-	  "graphql:similar": "graphql similar"
+    "fake-data": "ts-node src/db/faker.ts"
   },
   "dependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -36,13 +33,7 @@
     "testcontainers": "^10.15.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-	  "typescript": "^5.7.2",
-	  "graphql-cli": "4.1.0",
-	  "@graphql-cli/codegen": "3.0.4",
-	  "@graphql-codegen/typescript": "4.1.2",
-	  "@graphql-codegen/typescript-resolvers": "4.4.1",
-	  "@graphql-cli/diff": "2.1.0",
-	  "@graphql-cli/similar": "2.1.0"
+    "typescript": "^5.7.2"
   },
   "private": true
 }
