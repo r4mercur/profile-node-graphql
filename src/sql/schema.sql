@@ -20,3 +20,11 @@ CREATE TABLE IF NOT EXISTS "featured_profile"
     updated_at TIMESTAMP NOT NULL,
     FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
+
+CREATE TABLE IF NOT EXISTS "category" (
+    id         SERIAL PRIMARY KEY,
+    name       VARCHAR(255) NOT NULL,
+    sorting    INT          NOT NULL,
+    created_at TIMESTAMP    NOT NULL,
+    updated_at TIMESTAMP    NOT NULL
+);

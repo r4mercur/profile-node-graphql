@@ -13,3 +13,11 @@ export interface FakeUser {
     email: string;
     password: string;
 }
+
+export interface Category {
+    id?: number;
+    name: string;
+    sorting: number;
+    created_at?: Date;
+    updated_at?: Date;
+}

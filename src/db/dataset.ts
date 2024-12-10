@@ -1,6 +1,6 @@
 import pool from "./db";
 import bcrypt from "bcrypt";
-import {User} from "../types";
+import {Category, User} from "../types";
 import {FeaturedProfileType, ProductFeaturedProfile, RegistrationFeaturedProfile} from "../feature/feature";
 
 export async function getUsers(): Promise<User[]> {
@@ -276,6 +276,30 @@ export async function createProductFeaturedProfile(userId: number): Promise<Prod
         profile.created_at = createdProfile.created_at;
 
         return profile;
+    } finally {
+        client.release();
+    }
+}
+
+export async function createCategory(category: Category): Promise<Category> {
+    const client = await pool.connect();
+    try {
+        const res = await client.query<Category>(`INSERT INTO category (name, sorting, created_at, updated_at)
+                                                  VALUES ($1, $2, now(), now())
+                                                  RETURNING *`, [category.name, category.sorting]);
+        return res.rows[0];
+    } finally {
+        client.release();
+    }
+}
+
+export async function getCategories(): Promise<Category[]> {
+    const client = await pool.connect();
+    try {
+        const res = await client.query<Category>(`SELECT *
+                                                  FROM category
+                                                  ORDER BY sorting`);
+        return res.rows;
     } finally {
         client.release();
     }

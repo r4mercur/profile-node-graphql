@@ -17,6 +17,14 @@ type FeaturedProfile {
     user: User!
 }
 
+type Category {
+    id: ID!
+    name: String!
+    sorting: Int!
+    created_at: String!
+    updated_at: String!
+}
+
 type RegistrationFeaturedProfile {
     featured_profile: FeaturedProfile!
     registration_featured_profile_state: String!
@@ -35,6 +43,7 @@ type Query {
     getProductFeaturedProfile(id: Int): ProductFeaturedProfile
     getAllProductFeaturedProfiles: [ProductFeaturedProfile]
     getAllRegistrationFeaturedProfiles: [RegistrationFeaturedProfile]
+    getAllCategories: [Category]
 }
 
 type Mutation {

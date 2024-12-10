@@ -1,6 +1,6 @@
 import {faker} from '@faker-js/faker';
-import {createProductFeaturedProfile, createRegistrationFeaturedProfile, createUser} from "./dataset";
-import {FakeUser} from "../types";
+import {createCategory, createProductFeaturedProfile, createRegistrationFeaturedProfile, createUser} from "./dataset";
+import {Category, FakeUser} from "../types";
 
 export async function createFakerUser(): Promise<FakeUser> {
     const fake_user: FakeUser = {
@@ -35,7 +35,20 @@ async function createFakerRegistrationFeaturedProfile(fake_user: FakeUser) {
     throw new Error("User ID is not defined, could not create RegistrationFeaturedProfile");
 }
 
+async function createFakeCategories() {
+
+    for (let index = 0; index < 5; index++) {
+        const category: Category = {
+            name: faker.commerce.department(),
+            sorting: index
+        }
+
+        await createCategory(category).then(r => console.log("Created Category", r));
+    }
+}
+
 async function createFakerData() {
+    await createFakeCategories();
     const fake_users = await Promise.all(Array.from({length: 50}, createFakerUser));
 
     for (let index = 0; index < fake_users.length; index++) {
@@ -49,4 +62,4 @@ async function createFakerData() {
     }
 }
 
-createFakerData().then(r => console.log("Created Faker Data"));
+createFakerData().then(() => console.log("Created Faker Data"));
