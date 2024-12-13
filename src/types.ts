@@ -3,6 +3,7 @@ export interface User {
     username: string;
     email: string;
     password: string;
+    avatar_url: string;
     created_at: Date;
     updated_at: Date;
 }
@@ -12,6 +13,7 @@ export interface FakeUser {
     username: string;
     email: string;
     password: string;
+    avatar_url: string;
 }
 
 export interface Category {

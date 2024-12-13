@@ -3,6 +3,7 @@ type User {
     username: String!
     email: String!
     password: String!
+    avatar_url: String
     created_at: String!
     updated_at: String!
 }
@@ -61,6 +62,7 @@ type Mutation {
     createRegistrationFeaturedProfile(user_id: Int!): RegistrationFeaturedProfile
     createProductFeaturedProfile(user_id: Int!): ProductFeaturedProfile
     login(email: String!, password: String!): AuthPayload
+    uploadUserAvatar(user_id: Int!, avatar: Upload!): User
 }
 
 schema {
