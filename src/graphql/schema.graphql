@@ -1,3 +1,5 @@
+scalar Upload
+
 type User {
     id: ID!
     username: String!

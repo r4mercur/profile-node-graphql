@@ -304,3 +304,16 @@ export async function getCategories(): Promise<Category[]> {
         client.release();
     }
 }
+
+export async function updateUserAvatar(userId: number, avatarUrl: string): Promise<User> {
+    const client = await pool.connect();
+    try {
+        const res = await client.query<User>(`UPDATE "user"
+                                              SET avatar_url = $1, updated_at = now()
+                                              WHERE id = $2
+                                              RETURNING *`, [avatarUrl, userId]);
+        return res.rows[0];
+    } finally {
+        client.release();
+    }
+}

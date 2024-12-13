@@ -11,12 +11,17 @@ import {
     getUser,
     getUsers,
     loginUser,
-    updateUser
+    updateUser,
+    updateUserAvatar
 } from "../db/dataset";
 import {Category, User} from "../types";
 import jwt from "jsonwebtoken";
+import {MulterFile, uploadImage} from "../cloud/cloud-resolver";
+
+const {GraphQLUpload} = require('graphql-upload');
 
 const Resolver = {
+    Upload: GraphQLUpload,
     Query: {
         getAllUsers: () => getUsers(),
         getUser: (_: User, args: { id: number }) => getUser(args.id),
@@ -123,14 +128,15 @@ const Resolver = {
         uploadUserAvatar: async (_: any, {userId, file}: { userId: number, file: any }) => {
             const {createReadStream, filename, mimetype, encoding} = await file;
             const stream = createReadStream();
-            const buffer = await new Promise((resolve, reject) => {
+            const buffer: Buffer<ArrayBufferLike> = await new Promise((resolve, reject) => {
                 const chunks: any[] = [];
-                stream.on('data', (chunk) => chunks.push(chunk));
+                stream.on('data', (chunk: any) => chunks.push(chunk));
                 stream.on('end', () => resolve(Buffer.concat(chunks)));
                 stream.on('error', reject);
             });
 
-            const imageUrl = await uploadImage({buffer, originalname: filename});
+            const input: MulterFile = {originalname: filename, buffer};
+            const imageUrl = await uploadImage(input);
             // Update the user with the new avatar URL in your database
             const user: User = await updateUserAvatar(userId, imageUrl);
             return user;
