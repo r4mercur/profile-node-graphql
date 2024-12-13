@@ -5,6 +5,7 @@ import {
     deleteUser,
     getAllProductFeaturedProfiles,
     getAllRegistrationFeaturedProfiles,
+    getCategories,
     getProductFeaturedProfile,
     getRegistrationFeaturedProfile,
     getUser,
@@ -12,7 +13,7 @@ import {
     loginUser,
     updateUser
 } from "../db/dataset";
-import {User} from "../types";
+import {Category, User} from "../types";
 import jwt from "jsonwebtoken";
 
 const Resolver = {
@@ -69,6 +70,10 @@ const Resolver = {
                 };
             });
         },
+        getAllCategories: async () => {
+            const categories: Category[] = await getCategories();
+            return categories;
+        }
     },
     Mutation: {
         createUser: (_: User, args: { username: string, email: string, password: string }) => createUser(args),

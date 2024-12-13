@@ -17,14 +17,6 @@ type FeaturedProfile {
     user: User!
 }
 
-type Category {
-    id: ID!
-    name: String!
-    sorting: Int!
-    created_at: String!
-    updated_at: String!
-}
-
 type RegistrationFeaturedProfile {
     featured_profile: FeaturedProfile!
     registration_featured_profile_state: String!
@@ -34,6 +26,22 @@ type ProductFeaturedProfile {
     featured_profile: FeaturedProfile!
     product_featured_profile_state: String!
     product_featured_profile_timestamp: String!
+}
+
+type Category {
+    id: ID!
+    name: String!
+    sorting: Int!
+    created_at: String!
+    updated_at: String!
+}
+
+type AppInformation {
+    id: ID!
+    name: String!
+    version: String!
+    created_at: String!
+    updated_at: String!
 }
 
 type Query {
