@@ -1,6 +1,6 @@
 import pool from "./db";
 import bcrypt from "bcrypt";
-import {Category, User} from "../types";
+import {Category, FakeUser, User} from "../types";
 import {FeaturedProfileType, ProductFeaturedProfile, RegistrationFeaturedProfile} from "../feature/feature";
 
 export async function getUsers(): Promise<User[]> {
@@ -41,6 +41,21 @@ export async function createUser({ username, email, password }: { username: stri
         client.release();
     }
 }
+
+export async function createUserWithFakeUser(fake_user: FakeUser): Promise<User> {
+    const client = await pool.connect();
+    const hashedPassword = await bcrypt.hash(fake_user.password, 10);
+
+    try {
+        const res = await client.query<User>(`INSERT INTO "user" (username, email, password, avatar_url, created_at, updated_at)
+                                              VALUES ($1, $2, $3, $4, now(), now())
+                                              RETURNING *`, [fake_user.username, fake_user.email, hashedPassword, fake_user.avatar_url]);
+        return res.rows[0];
+    } finally {
+        client.release();
+    }
+}
+
 
 export async function loginUser({ email, password }: { email: string, password: string }): Promise<User | null> {
     const client = await pool.connect();

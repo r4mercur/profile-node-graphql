@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker';
-import {createCategory, createProductFeaturedProfile, createRegistrationFeaturedProfile, createUser} from "./dataset";
+import {createCategory, createProductFeaturedProfile, createRegistrationFeaturedProfile, createUserWithFakeUser} from "./dataset";
 import {Category, FakeUser} from "../types";
 
 export async function createFakerUser(): Promise<FakeUser> {
@@ -9,7 +9,8 @@ export async function createFakerUser(): Promise<FakeUser> {
         password: faker.internet.password()
     };
 
-    const created_user = await createUser(fake_user);
+    fake_user.avatar_url = 'https://storage.cloud.google.com/nodegraphql-user-avatar/c32e5c49-fad9-48a6-ae3b-73878482daec.jpeg';
+    const created_user = await createUserWithFakeUser(fake_user);
     fake_user.id = created_user.id;
     return fake_user;
 }
