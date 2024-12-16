@@ -60,7 +60,7 @@ export function setupEndpoints(app: Express) {
             const fileUrl = await uploadImage(req.file);
             res.status(200).send({fileUrl});
         } catch (err) {
-            res.status(500).send({message: err});
+            res.status(500).send({message: 'Upload failed'});
         }
     });
 }
