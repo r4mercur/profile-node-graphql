@@ -3,6 +3,10 @@ import {Category} from "../types";
 import {getAllProductFeaturedProfiles, getCategories} from "../db/dataset";
 import {ProductFeaturedProfile} from "../feature/feature";
 import {stringify} from 'flatted';
+import multer from "multer";
+import {uploadImage} from "../cloud/cloud-resolver";
+
+const upload = multer({storage: multer.memoryStorage()});
 
 export function setupEndpoints(app: Express) {
     app.get('/api/v1/dashboard', async (_, res) => {
@@ -46,4 +50,17 @@ export function setupEndpoints(app: Express) {
 
         return res.json(JSON.parse(stringify(result)));
     })
+
+    app.post('/api/v1/avatar/upload', upload.single('file'), async (req, res) => {
+        if (!req.file) {
+            return res.status(400).send('No file uploaded.');
+        }
+
+        try {
+            const fileUrl = await uploadImage(req.file);
+            res.status(200).send({fileUrl});
+        } catch (err) {
+            res.status(500).send({message: err});
+        }
+    });
 }

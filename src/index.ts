@@ -6,13 +6,12 @@ import Schema from "./graphql/schema";
 import Resolver from "./graphql/resolver";
 import {setupRabbit} from "./rabbit/rabbit";
 import {setupEndpoints} from "./rest/endpoints";
-
-const cors = require('cors');
+import cors from "cors";
 
 async function startApplication(schema: any, resolvers: any) {
   const app = express();
   app.use(express.json());
-    app.use(cors());
+  app.use(cors());
 
   // authenticateToken is a middleware function that checks if the user is authenticated
   // app.use(authenticateToken);

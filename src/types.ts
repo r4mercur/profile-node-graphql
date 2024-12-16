@@ -13,7 +13,7 @@ export interface FakeUser {
     username: string;
     email: string;
     password: string;
-    avatar_url: string;
+    avatar_url?: string;
 }
 
 export interface Category {
