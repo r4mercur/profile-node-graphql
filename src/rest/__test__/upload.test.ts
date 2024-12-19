@@ -11,7 +11,7 @@ setupEndpoints(app);
 
 describe('POST /api/v1/avatar/upload', () => {
     it('should upload an image and return the file URL', async () => {
-        const mockFileUrl = 'http://example.com/file.jpg';
+        const mockFileUrl = 'https://example.com/file.jpg';
         (uploadImage as jest.Mock).mockResolvedValue(mockFileUrl);
 
         const response = await request(app)

@@ -13,7 +13,7 @@ import {
     loginUser,
     updateUser
 } from "../db/dataset";
-import {Category, User} from "../types";
+import {User} from "../types";
 import jwt from "jsonwebtoken";
 
 const Resolver = {
@@ -71,8 +71,7 @@ const Resolver = {
             });
         },
         getAllCategories: async () => {
-            const categories: Category[] = await getCategories();
-            return categories;
+            return await getCategories();
         }
     },
     Mutation: {
