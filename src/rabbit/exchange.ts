@@ -1,8 +1,8 @@
-import amqp from 'amqplib';
+import {Channel, ChannelModel, connect} from 'amqplib';
 
 export class RabbitExchange {
-    private connection?: amqp.Connection;
-    private channel?: amqp.Channel;
+    private connection?: ChannelModel;
+    private channel?: Channel;
 
     constructor(
         private readonly uri: string = "amqp://rabbit:password@localhost:5672",
@@ -12,7 +12,7 @@ export class RabbitExchange {
 
     async connect(): Promise<void> {
         try {
-            this.connection = await amqp.connect(this.uri);
+            this.connection = await connect(this.uri);
             this.channel = await this.connection.createChannel();
             await this.channel.assertExchange(this.exchange, this.exchangeType, {durable: true});
 

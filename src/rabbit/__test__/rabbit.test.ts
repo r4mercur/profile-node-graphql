@@ -28,6 +28,6 @@ describe('RabbitMQ Integration Test', () => {
 
     it('should throw an error when publishing a message without connecting', async () => {
         const exchange = new RabbitExchange(uri, 'testExchange');
-        await expect(exchange.publish('testRoutingKey', 'Hello, World!')).rejects.toThrowError();
+        await expect(exchange.publish('testRoutingKey', 'Hello, World!')).rejects.toThrow();
     });
 });
