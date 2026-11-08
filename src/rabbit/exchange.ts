@@ -1,11 +1,12 @@
 import {Channel, ChannelModel, connect} from 'amqplib';
+import {config} from '../config/env';
 
 export class RabbitExchange {
     private connection?: ChannelModel;
     private channel?: Channel;
 
     constructor(
-        private readonly uri: string = "amqp://rabbit:password@localhost:5672",
+        private readonly uri: string = config.rabbit.uri,
         private readonly exchange: string,
         private readonly exchangeType: string = "direct",
     ) {}

@@ -1,0 +1,14 @@
+node_modules
+dist
+data
+.git
+.github
+.idea
+.vscode
+npm-debug.log*
+
+# tests are not part of the runtime image
+**/__test__
+
+# never ship credentials in the image
+src/config/*.json

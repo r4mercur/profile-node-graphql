@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
+    "test:integration": "jest --config jest.integration.config.js --runInBand",
     "start": "tsx src/index.ts",
     "fake-data": "tsx src/db/faker.ts"
   },

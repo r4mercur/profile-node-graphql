@@ -1,4 +1,5 @@
 import amqp from 'amqplib';
+import {config} from '../config/env';
 
 interface Exchange {
     name: string;
@@ -20,10 +21,10 @@ interface Binding {
 export async function setupRabbit() {
     const connection = await amqp.connect({
         protocol: 'amqp',
-        hostname: 'localhost',
-        port: 5672,
-        username: 'rabbit',
-        password: 'password',
+        hostname: config.rabbit.host,
+        port: config.rabbit.port,
+        username: config.rabbit.user,
+        password: config.rabbit.password,
         vhost: '/',
     });
     const channel = await connection.createChannel();
