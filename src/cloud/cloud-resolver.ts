@@ -1,5 +1,5 @@
 import {bucket} from '../config/googleCloudStorage';
-import {v4 as uuidv4} from 'uuid';
+import {randomUUID} from 'node:crypto';
 import * as path from 'node:path';
 
 export interface MulterFile {
@@ -8,7 +8,7 @@ export interface MulterFile {
 }
 
 export async function uploadImage(file: MulterFile): Promise<string> {
-    const blob = bucket.file(uuidv4() + path.extname(file.originalname));
+    const blob = bucket.file(randomUUID() +path.extname(file.originalname));
     const blobStream = blob.createWriteStream({
         resumable: false,
     });

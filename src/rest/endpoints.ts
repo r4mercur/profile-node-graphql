@@ -1,57 +1,33 @@
-import {Express} from "express";
-import {Category} from "../types";
-import {getAllProductFeaturedProfiles, getCategories} from "../db/dataset";
-import {ProductFeaturedProfile} from "../feature/feature";
-import {stringify} from 'flatted';
+import {Express, NextFunction, Request, Response, Router} from "express";
 import multer from "multer";
+import {getCategories} from "../db/dataset";
 import {uploadImage} from "../cloud/cloud-resolver";
+import {listProductProfiles, listRegistrationProfiles} from "../services/featured-profile-service";
+import {getDashboard} from "../services/dashboard-service";
 
 const upload = multer({storage: multer.memoryStorage()});
 
-export function setupEndpoints(app: Express) {
-    app.get('/api/v1/dashboard', async (_, res) => {
-        const result = [];
+export function createApiRouter(): Router {
+    const router = Router();
 
-        const categories: Category[] = await getCategories();
-        result.push({categories: categories});
+    // Express 5 forwards rejected promises from async handlers to the error handler below.
+    router.get('/dashboard', async (_, res) => {
+        res.json(await getDashboard());
+    });
 
-        const productFeaturedProfiles: ProductFeaturedProfile[] = await getAllProductFeaturedProfiles();
-        result.push({productFeaturedProfiles: productFeaturedProfiles});
+    router.get('/categories', async (_, res) => {
+        res.json({categories: await getCategories()});
+    });
 
-        const registrationFeaturedProfiles: ProductFeaturedProfile[] = await getAllProductFeaturedProfiles();
-        result.push({registrationFeaturedProfiles: registrationFeaturedProfiles});
+    router.get('/productFeaturedProfiles', async (_, res) => {
+        res.json({productFeaturedProfiles: await listProductProfiles()});
+    });
 
-        return res.json(JSON.parse(stringify(result)));
-    })
+    router.get('/registrationFeaturedProfiles', async (_, res) => {
+        res.json({registrationFeaturedProfiles: await listRegistrationProfiles()});
+    });
 
-    app.get('/api/v1/categories', async (_, res) => {
-        const result = [];
-
-        const categories: Category[] = await getCategories();
-        result.push({categories: categories});
-
-        return res.json(JSON.parse(stringify(result)));
-    })
-
-    app.get('/api/v1/productFeaturedProfiles', async (_, res) => {
-        const result = [];
-
-        const productFeaturedProfiles: ProductFeaturedProfile[] = await getAllProductFeaturedProfiles();
-        result.push({productFeaturedProfiles: productFeaturedProfiles});
-
-        return res.json(JSON.parse(stringify(result)));
-    })
-
-    app.get('/api/v1/registrationFeaturedProfiles', async (_, res) => {
-        const result = [];
-
-        const registrationFeaturedProfiles: ProductFeaturedProfile[] = await getAllProductFeaturedProfiles();
-        result.push({registrationFeaturedProfiles: registrationFeaturedProfiles});
-
-        return res.json(JSON.parse(stringify(result)));
-    })
-
-    app.post('/api/v1/avatar/upload', upload.single('file'), async (req, res) => {
+    router.post('/avatar/upload', upload.single('file'), async (req, res) => {
         if (!req.file) {
             return res.status(400).send('No file uploaded.');
         }
@@ -60,7 +36,19 @@ export function setupEndpoints(app: Express) {
             const fileUrl = await uploadImage(req.file);
             res.status(200).send({fileUrl});
         } catch (err) {
+            console.error('Avatar upload failed:', err);
             res.status(500).send({message: 'Upload failed'});
         }
     });
+
+    router.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+        console.error('Unhandled error in REST API:', err);
+        res.status(500).json({message: 'Internal server error'});
+    });
+
+    return router;
+}
+
+export function setupEndpoints(app: Express) {
+    app.use('/api/v1', createApiRouter());
 }
