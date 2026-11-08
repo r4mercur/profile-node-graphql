@@ -8,6 +8,7 @@ import Resolver from "./graphql/resolver";
 import {setupRabbit} from "./rabbit/rabbit";
 import {setupEndpoints} from "./rest/endpoints";
 import cors from "cors";
+import {config} from "./config/env";
 
 async function startApplication(schema: any, resolvers: any) {
   const app = express();
@@ -30,8 +31,8 @@ async function startApplication(schema: any, resolvers: any) {
   await server.start();
   app.use("/graphql", expressMiddleware(server));
 
-  await new Promise<void>((resolve) => httpServer.listen({port: 4000}, resolve));
-  console.log("Server ready at http://localhost:4000/graphql");
+  await new Promise<void>((resolve) => httpServer.listen({port: config.port}, resolve));
+  console.log(`Server ready at http://localhost:${config.port}/graphql`);
 }
 
 

@@ -31,6 +31,7 @@ describe('POST /api/v1/avatar/upload', () => {
     });
 
     it('should return 500 if uploadImage throws an error', async () => {
+        jest.spyOn(console, 'error').mockImplementation();
         (uploadImage as jest.Mock).mockRejectedValue(new Error('Upload failed'));
 
         const response = await request(app)

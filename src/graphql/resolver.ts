@@ -1,112 +1,50 @@
 import {
-    createProductFeaturedProfile,
-    createRegistrationFeaturedProfile,
     createUser,
     deleteUser,
-    getAllProductFeaturedProfiles,
-    getAllRegistrationFeaturedProfiles,
     getCategories,
-    getProductFeaturedProfile,
-    getRegistrationFeaturedProfile,
     getUser,
     getUsers,
     loginUser,
     updateUser
 } from "../db/dataset";
-import {User} from "../types";
+import {
+    createProductProfile,
+    createRegistrationProfile,
+    findProductProfile,
+    findRegistrationProfile,
+    listProductProfiles,
+    listRegistrationProfiles
+} from "../services/featured-profile-service";
+import {FeaturedProfileDto} from "../feature/dto";
 import jwt from "jsonwebtoken";
+
+type NoParent = unknown;
+
+// `FeaturedProfile` (id, user) is a subset of every featured profile DTO, so the DTO resolves it directly.
+const featuredProfile = (profile: FeaturedProfileDto) => profile;
 
 const Resolver = {
     Query: {
         getAllUsers: () => getUsers(),
-        getUser: (_: User, args: { id: number }) => getUser(args.id),
-        getRegistrationFeaturedProfile: async (_: any, {id}: { id: number }) => {
-            const profile = await getRegistrationFeaturedProfile(id);
-            return {
-                id: profile.id,
-                featured_profile: profile,
-                registration_featured_profile_state: profile.registrationFeaturedProfileState,
-                user: profile.user,
-                created_at: profile.created_at,
-                updated_at: profile.updated_at,
-            };
-        },
-        getProductFeaturedProfile: async (_: any, {id}: { id: number }) => {
-            const profile = await getProductFeaturedProfile(id);
-            return {
-                id: profile.id,
-                featured_profile: profile,
-                product_featured_profile_state: profile.productFeaturedProfileState,
-                product_featured_profile_timestamp: profile.productFeaturedProfileTimestamp,
-                user: profile.user,
-                created_at: profile.created_at,
-                updated_at: profile.updated_at,
-            };
-        },
-        getAllProductFeaturedProfiles: async () => {
-            const profiles = await getAllProductFeaturedProfiles();
-            return profiles.map(profile => {
-                return {
-                    id: profile.id,
-                    featured_profile: profile,
-                    product_featured_profile_state: profile.productFeaturedProfileState,
-                    product_featured_profile_timestamp: profile.productFeaturedProfileTimestamp,
-                    user: profile.user,
-                    created_at: profile.created_at,
-                    updated_at: profile.updated_at,
-                };
-            });
-        },
-        getAllRegistrationFeaturedProfiles: async () => {
-            const profiles = await getAllRegistrationFeaturedProfiles();
-            return profiles.map(profile => {
-                return {
-                    id: profile.id,
-                    featured_profile: profile,
-                    registration_featured_profile_state: profile.registrationFeaturedProfileState,
-                    user: profile.user,
-                    created_at: profile.created_at,
-                    updated_at: profile.updated_at,
-                };
-            });
-        },
-        getAllCategories: async () => {
-            return await getCategories();
-        }
+        getUser: (_: NoParent, args: { id: number }) => getUser(args.id),
+        getRegistrationFeaturedProfile: (_: NoParent, {id}: { id: number }) => findRegistrationProfile(id),
+        getProductFeaturedProfile: (_: NoParent, {id}: { id: number }) => findProductProfile(id),
+        getAllProductFeaturedProfiles: () => listProductProfiles(),
+        getAllRegistrationFeaturedProfiles: () => listRegistrationProfiles(),
+        getAllCategories: () => getCategories(),
     },
     Mutation: {
-        createUser: (_: User, args: { username: string, email: string, password: string }) => createUser(args),
-        updateUser: (_: User, args: {
+        createUser: (_: NoParent, args: { username: string, email: string, password: string }) => createUser(args),
+        updateUser: (_: NoParent, args: {
             id: number,
             username: string,
             email: string,
             password: string
         }) => updateUser(args),
-        deleteUser: (_: User, args: { id: number }) => deleteUser(args.id),
-        createRegistrationFeaturedProfile: async (_: any, {user_id}: { user_id: number }) => {
-            const profile = await createRegistrationFeaturedProfile(user_id);
-            return {
-                id: profile.id,
-                featured_profile: profile,
-                registration_featured_profile_state: profile.registrationFeaturedProfileState,
-                user: profile.user,
-                created_at: profile.created_at,
-                updated_at: profile.updated_at,
-            };
-        },
-        createProductFeaturedProfile: async (_: any, {user_id}: { user_id: number }) => {
-            const profile = await createProductFeaturedProfile(user_id);
-            return {
-                id: profile.id,
-                featured_profile: profile,
-                product_featured_profile_state: profile.productFeaturedProfileState,
-                product_featured_profile_timestamp: profile.productFeaturedProfileTimestamp,
-                user: profile.user,
-                created_at: profile.created_at,
-                updated_at: profile.updated_at,
-            };
-        },
-        login: async (_: User, args: { email: string, password: string }) => {
+        deleteUser: (_: NoParent, args: { id: number }) => deleteUser(args.id),
+        createRegistrationFeaturedProfile: (_: NoParent, {user_id}: { user_id: number }) => createRegistrationProfile(user_id),
+        createProductFeaturedProfile: (_: NoParent, {user_id}: { user_id: number }) => createProductProfile(user_id),
+        login: async (_: NoParent, args: { email: string, password: string }) => {
             const user = await loginUser({email: args.email, password: args.password});
             if (!user) {
                 throw new Error('Invalid email or password');
@@ -119,7 +57,13 @@ const Resolver = {
                 token
             }
         },
-    }
+    },
+    RegistrationFeaturedProfile: {
+        featured_profile: featuredProfile,
+    },
+    ProductFeaturedProfile: {
+        featured_profile: featuredProfile,
+    },
 };
 
 export default Resolver;
